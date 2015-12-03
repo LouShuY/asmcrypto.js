@@ -17,6 +17,7 @@ function AES_set_key ( key ) {
         else if ( is_string(key) ) {
             key = string_to_bytes(key);
         }
+        
         else {
             throw new TypeError("unexpected key type");
         }
@@ -257,6 +258,16 @@ function AES_Decrypt_finish ( data ) {
         presult = AES_Decrypt_process.call( this, data ).result;
         prlen = presult.length;
     }
+
+if ( len > 0 ) {
+        if ( len % 16 ) {
+            if ( this.hasOwnProperty('padding') ) {
+                throw new IllegalArgumentError("data length must be a multiple of the block size");
+            } else {
+                len += 16 - len % 16;
+            }
+        }
+
 
     var asm = this.asm,
         heap = this.heap,
